@@ -2,8 +2,17 @@ import React from "react";
 import { FiShoppingCart } from "react-icons/fi";
 import { getImgUrl } from "../../utils/getimgUrl";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../redux/features/cart/cartSlice";
 
 export const BookCard = ({ book }) => {
+  const dispatch = useDispatch();
+
+  const handleAddToCart = (product) => {
+    //in here we are calling the addToCart action to
+    //inside of that we are passing the product in here it is a book.
+    dispatch(addToCart(product));
+  };
   return (
     <div className=" rounded-lg transition-shadow duration-300">
       <div className="flex flex-col sm:flex-row sm:items-center sm:h-72  sm:justify-center gap-4">
@@ -18,14 +27,16 @@ export const BookCard = ({ book }) => {
         </div>
 
         <div>
-          <Link to={`/books/${book._id}`}>
+          <Link to={`/books/${book?._id}`}>
             <h3 className="text-xl font-semibold hover:text-blue-600 mb-3">
-              {book?.title}
+              {book?.title.length > 30
+                ? `${book?.title.slice(0, 30)}...`
+                : book?.title}
             </h3>
           </Link>
           <p className="text-gray-600 mb-5">
-            {book?.description.length > 80
-              ? `${book?.description.slice(0, 80)}...`
+            {book?.description.length > 60
+              ? `${book?.description.slice(0, 60)}...`
               : book?.description}
           </p>
           <p className="font-medium mb-5">
@@ -34,9 +45,14 @@ export const BookCard = ({ book }) => {
               ${book?.oldPrice}
             </span>
           </p>
-          <button className="btn-primary px-6 space-x-1 flex items-center gap-1 ">
+          <button
+            onClick={() => {
+              handleAddToCart(book);
+            }}
+            className="btn-primary px-6 space-x-1 flex items-center gap-1 "
+          >
             <FiShoppingCart className="" />
-            <span>Add to Cart</span>
+            <span className="text-xs">Add to Cart</span>
           </button>
         </div>
       </div>

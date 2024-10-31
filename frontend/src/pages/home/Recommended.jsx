@@ -16,7 +16,6 @@ import { Pagination, Navigation } from "swiper/modules";
 export const Recommended = () => {
   const [books, setBooks] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("Choose a genre");
-  console.log(selectedCategory);
   useEffect(() => {
     fetch("books.json")
       .then((res) => {
